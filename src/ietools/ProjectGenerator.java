@@ -16,6 +16,7 @@ public class ProjectGenerator
 	private String schema = "validator.";
 	private String docTable;
 	private List<String> docColumns;
+	private List<String> docNameColumns;
 	private List<String> entityColumns;
 	private String orderbyColumn;
 	private Gson gson;
@@ -66,10 +67,14 @@ public class ProjectGenerator
 			docTextColumn = props.getProperty("docTextColumn");
 			
 			String docColumnsStr = props.getProperty("docColumns");
+			String docNameColumnsStr = props.getProperty("docNameColumns");
 			String entityColumnsStr = props.getProperty("entityColumns");
 			
 			docColumns = new ArrayList<String>();
 			docColumns = gson.fromJson(docColumnsStr, docColumns.getClass());
+			
+			docNameColumns = new ArrayList<String>();
+			docNameColumns = gson.fromJson(docNameColumnsStr, docNameColumns.getClass());
 			
 			entityColumns = new ArrayList<String>();
 			entityColumns = gson.fromJson(entityColumnsStr, entityColumns.getClass());
@@ -299,13 +304,19 @@ public class ProjectGenerator
 			
 			Map<String, String> docFeaturesMap = new HashMap<String, String>();
 			StringBuilder docName = new StringBuilder();
+			for (int i=0; i<docNameColumns.size(); i++) {
+				String colName = docNameColumns.get(i);
+				String result = rs.getString(colName);
+				//docFeaturesMap.put(colName, result);
+				if (i > 0)
+					docName.append(docDelimiters.get(i-1));
+				docName.append(result);
+			}
+			
 			for (int i=0; i<docColumns.size(); i++) {
 				String colName = docColumns.get(i);
 				String result = rs.getString(colName);
 				docFeaturesMap.put(colName, result);
-				if (i > 0)
-					docName.append(docDelimiters.get(i-1));
-				docName.append(result);
 			}
 			
 			List<Long> docList = (List<Long>) frameMap.get("docList");

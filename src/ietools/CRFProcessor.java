@@ -373,21 +373,21 @@ public class CRFProcessor
 				htmlStr += "<input type='button' id='" + htmlID + "_add' value='+' onclick='addElement(this.id)'/>";
 		}
 		else if (elementType.equals("text")) {
-			htmlStr = "<input type='text' id='" + htmlID + "' />";
+			htmlStr = "<input type='text' id='" + htmlID + "' " + " name='" + htmlID + "' />";
 			if ((repeat == -1 || repeat > 1) && elementRepeatNum ==  0)
 				htmlStr += "<input type='button' id='" + htmlID + "_add' value='+' onclick='addElement(this.id)'/>";
 			if (elementRepeatNum > 0)
 				htmlStr += "<input type='button' id='" + htmlID + "_remove' value='-' onclick='removeElement(this.id)'/>";
 		}
 		else if (elementType.equals("date")) {
-			htmlStr = "<input type='date' id='" + htmlID + "' />";
+			htmlStr = "<input type='date' id='" + htmlID + "' name='" + htmlID + "' />";
 			if ((repeat == -1 || repeat > 1) && elementRepeatNum ==  0)
 				htmlStr += "<input type='button' id='" + htmlID + "_add' value='+' onclick='addElement(this.id)'/>";
 			if (elementRepeatNum > 0)
 				htmlStr += "<input type='button' id='" + htmlID + "_remove' value='-' onclick='removeElement(this.id)'/>";
 		}
 		else if (elementType.equals("textarea")) {
-			htmlStr = "<textarea id='" + htmlID + "'></textarea>";
+			htmlStr = "<textarea id='" + htmlID + "' name='" + htmlID + "'></textarea>";
 			if ((repeat == -1 || repeat > 1) && elementRepeatNum ==  0)
 				htmlStr += "<input type='button' id='" + htmlID + "_add' value='+' onclick='addElement(this.id)'/>";
 			if (elementRepeatNum > 0)

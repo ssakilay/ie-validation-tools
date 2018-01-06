@@ -30,6 +30,8 @@ public class ProjectGenerator
 	private List<Pattern> regExList;
 	private List<Pattern> negExList;
 	private boolean write = false;
+	private Map<String, Integer> frameInstanceMap;
+	private Map<Integer, Integer> frameInstanceCountMap;
 	
 	
 	public ProjectGenerator()
@@ -139,8 +141,32 @@ public class ProjectGenerator
 				frameID = rs.getInt(1);
 			}
 			
+			//get existing frame instances
+			frameInstanceMap = new HashMap<String, Integer>();
+			frameInstanceCountMap = new HashMap<Integer, Integer>();
+			rs = stmt.executeQuery("select frame_instance_id, name from " + schema + "frame_instance");
+			while (rs.next()) {
+				int frameInstanceID = rs.getInt(1);
+				String name = rs.getString(2);
+				frameInstanceMap.put(name, frameInstanceID);
+			}
+			
+			rs = stmt.executeQuery("select frame_instance_id, count(*) from " + schema + "frame_instance_document group by frame_instance_id");
+			while (rs.next()) {
+				int frameInstanceID = rs.getInt(1);
+				int count = rs.getInt(2);
+				frameInstanceCountMap.put(frameInstanceID, count);
+			}
+			
+			//check if projID exists
 			int projID = -1;
-			if (write) {
+			rs = stmt.executeQuery("select project_id from " + schema + "project where name = '" + projName + "'");
+			if (rs.next()) {
+				projID = rs.getInt(1);
+			}
+			
+			
+			if (write && projID == -1) {
 				stmt.execute("insert into " + schema + "project (name) values ('" + projName + "')");
 				projID = getLastID();
 				stmt.execute("insert into " + schema + "crf_project (crf_id, project_id) values (" + crfID + "," + projID + ")");
@@ -176,10 +202,20 @@ public class ProjectGenerator
 				
 				pstmt.setString(1, (String) frameMap.get("entityID"));
 				
-				if (write)
-					pstmt.execute();
 				
-				int frameInstanceID = getLastID();
+				Integer frameInstanceID = (Integer) frameMap.get("frameInstanceID");
+				boolean frameInstanceFlag = false;
+				int baseCount = 0;
+				
+				if (write && (frameInstanceID == null)) {
+					pstmt.execute();
+					frameInstanceID = getLastID();
+					frameInstanceFlag = true;
+				}
+				else {
+					baseCount = frameInstanceCountMap.get(frameInstanceID);
+				}
+				
 				System.out.println("frameInstanceID: " + frameInstanceID);
 				
 				pstmt2.setInt(1, frameInstanceID);
@@ -191,18 +227,20 @@ public class ProjectGenerator
 					
 					pstmt2.setLong(2, docID);
 					pstmt2.setString(7, docName);
-					pstmt2.setInt(8, i);
+					pstmt2.setInt(8, baseCount + i);
 					pstmt2.setString(9, docFeaturesStr);
 					
 					if (write)
 						pstmt2.execute();
 				}
 				
-				pstmt3.setInt(1, projID);
-				pstmt3.setInt(2, frameInstanceID);
-				
-				if (write)	
-				pstmt3.execute();
+				if (frameInstanceFlag) {
+					pstmt3.setInt(1, projID);
+					pstmt3.setInt(2, frameInstanceID);
+					
+					if (write)	
+						pstmt3.execute();
+				}
 			}
 			
 			
@@ -295,6 +333,12 @@ public class ProjectGenerator
 			if (frameMap == null) {
 				frameMap = new HashMap<String, Object>();
 				frameMap.put("entityID", entityID.toString());
+				
+				//look for existing frameInstanceIDs
+				Integer frameInstanceID = frameInstanceMap.get(entityID.toString());
+				if (frameInstanceID != null)
+					frameMap.put("frameInstanceID", frameInstanceID);
+				
 				frameInstanceInfoMap.put(entityID.toString(), frameMap);
 				frameInstanceInfoList.add(frameMap);
 			}

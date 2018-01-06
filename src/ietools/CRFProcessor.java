@@ -834,6 +834,8 @@ public class CRFProcessor
 		}
 		
 		try {
+			if (args[5].equals("NULL"))
+				args[5]	= "";
 			CRFProcessor proc = new CRFProcessor(args[5] + ".");
 			proc.readCRFFile(args[0], args[1], args[2], args[3], args[4], args[6]);
 		}

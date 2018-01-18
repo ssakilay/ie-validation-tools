@@ -133,13 +133,36 @@ public class ProjectGenerator
 			docConn = DBConnection.dbConnection(docUser, docPassword, docHost, docDBName, docDBType);
 			
 			Statement stmt = conn.createStatement();
+			
+			//get crf ID and frame ID
 			int crfID = -1;
 			int frameID = -1;
-			ResultSet rs = stmt.executeQuery("select crf_id, frame_id from " + schema + "crf where name = '" + crfName + "'");
+			ResultSet rs = stmt.executeQuery("select a.crf_id, a.frame_id from " + schema + "crf a, " + schema + "crf_project b, " + schema + "project c "
+				+ "where c.name = '" + projName + "' and c.project_id = b.project_id and b.crd_id = a.crf_id");
 			if (rs.next()) {
 				crfID = rs.getInt(1);
 				frameID = rs.getInt(1);
 			}
+			
+			
+			//check if projID exists
+			int projID = -1;
+			rs = stmt.executeQuery("select project_id from " + schema + "project where name = '" + projName + "'");
+			if (rs.next()) {
+				projID = rs.getInt(1);
+			}
+			
+			
+			//create new project
+			if (write && projID == -1) {
+				stmt.execute("insert into " + schema + "project (name) values ('" + projName + "')");
+				projID = getLastID();
+				stmt.execute("insert into " + schema + "crf_project (crf_id, project_id) values (" + crfID + "," + projID + ")");
+			}
+			
+			if (docQuery == null || docQuery.length() == 0)
+				return;
+			
 			
 			//get existing frame instances
 			frameInstanceMap = new HashMap<String, Integer>();
@@ -158,20 +181,6 @@ public class ProjectGenerator
 				frameInstanceCountMap.put(frameInstanceID, count);
 			}
 			
-			//check if projID exists
-			int projID = -1;
-			rs = stmt.executeQuery("select project_id from " + schema + "project where name = '" + projName + "'");
-			if (rs.next()) {
-				projID = rs.getInt(1);
-			}
-			
-			
-			if (write && projID == -1) {
-				stmt.execute("insert into " + schema + "project (name) values ('" + projName + "')");
-				projID = getLastID();
-				stmt.execute("insert into " + schema + "crf_project (crf_id, project_id) values (" + crfID + "," + projID + ")");
-			}
-			
 			
 			List<Map<String, Object>> frameInstanceInfoList = getFrameInstanceList();
 			
@@ -183,7 +192,7 @@ public class ProjectGenerator
 				+ "document_table, document_namespace, document_key, document_text_column, document_name, document_order, document_features) "
 				+ "values (?,?,?,?,?,?,?,?,?)");
 			
-			//query to insert new project
+			//query to associate frames with project
 			PreparedStatement pstmt3 = conn.prepareStatement("insert into " + schema + "project_frame_instance (project_id, frame_instance_id) values (?,?)");
 			
 			pstmt.setInt(2, frameID);

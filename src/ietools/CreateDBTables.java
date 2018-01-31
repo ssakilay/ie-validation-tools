@@ -73,6 +73,7 @@ public class CreateDBTables
 		
 		String rq = DBConnection.reservedQuote;
 		PreparedStatement pstmt = conn.prepareStatement("insert into " + schema + "." + rq + "user" + rq + " (user_name, pw) values (?,?)");
+		System.out.println("insert into " + schema + "." + rq + "user" + rq + " (user_name, pw) values (?,?)");
 		
 		for (String user : userList) {
 			String[] parts = user.split("\\|");

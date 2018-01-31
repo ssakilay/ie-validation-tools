@@ -71,7 +71,8 @@ public class CreateDBTables
 		List<String> userList = new ArrayList<String>();
 		userList = gson.fromJson(props.getProperty("users"), userList.getClass());
 		
-		PreparedStatement pstmt = conn.prepareStatement("insert into " + schema + ".user (user_name, pw) values (?,?)");
+		String rq = DBConnection.reservedQuote;
+		PreparedStatement pstmt = conn.prepareStatement("insert into " + schema + "." + rq + "user" + rq + " (user_name, pw) values (?,?)");
 		
 		for (String user : userList) {
 			String[] parts = user.split("\\|");

@@ -21,11 +21,17 @@ public class CRFProcessor
 	private Map<Integer, String> slotCondMap;
 	private String schema = "validator.";
 	private String rq;
+	
 
 	public CRFProcessor(String schema)
 	{
 		gson = new Gson();
 		this.schema = schema;
+	}
+	
+	public void setConnection(Connection conn)
+	{
+		this.conn = conn;
 	}
 	
 	public String readCRFDB(int crfID, List<Map<String, Object>> sectionList) throws SQLException
@@ -70,9 +76,18 @@ public class CRFProcessor
 		return jsonStr;
 	}
 	
+	
 	public String readCRFFile(String user, String password, String host, String dbName, String dbType, String fileName) throws IOException, SQLException, ClassNotFoundException
 	{
 		conn = DBConnection.dbConnection(user, password, host, dbName, dbType);
+		String jsonStr = readCRFFile(fileName);
+		conn.close();
+		
+		return jsonStr;
+	}
+	
+	public String readCRFFile(String fileName) throws IOException, SQLException
+	{
 		frameGen = new FrameGenerator(conn, schema);
 		slotAnnotMap = new HashMap<Integer, String>();
 		slotCondMap = new HashMap<Integer, String>();
@@ -84,6 +99,8 @@ public class CRFProcessor
 			strBlder.append(line + "\n");
 		}
 		
+		reader.close();
+		
 		//System.out.println(strBlder.toString());
 		
 		dataList = new ArrayList<Map<String, Object>>();
@@ -93,6 +110,17 @@ public class CRFProcessor
 		dataMap = gson.fromJson(strBlder.toString(), dataMap.getClass());
 		
 		String crfName = (String) dataMap.get("name");
+		
+		//check if CRF already exists
+		int crfCount = 0;
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery("select count(*) from " + schema + "crf where name = '" + crfName + "'");
+		if (rs.next()) {
+			crfCount = rs.getInt(1);
+		}
+		
+		if (crfCount > 0)
+			return null;
 		
 		//List<Map<String, Object>> elementList = new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> elementList = (List<Map<String, Object>>) dataMap.get("elements");
@@ -135,7 +163,7 @@ public class CRFProcessor
 		System.out.println(jsonStr);
 		
 		reader.close();
-		conn.close();
+		
 		
 		return jsonStr;
 	}

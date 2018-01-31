@@ -138,7 +138,7 @@ public class ProjectGenerator
 			int crfID = -1;
 			int frameID = -1;
 			ResultSet rs = stmt.executeQuery("select a.crf_id, a.frame_id from " + schema + "crf a, " + schema + "crf_project b, " + schema + "project c "
-				+ "where c.name = '" + projName + "' and c.project_id = b.project_id and b.crd_id = a.crf_id");
+				+ "where c.name = '" + projName + "' and c.project_id = b.project_id and b.crf_id = a.crf_id");
 			if (rs.next()) {
 				crfID = rs.getInt(1);
 				frameID = rs.getInt(1);

@@ -1,0 +1,623 @@
+{
+	name: "LDCT",
+	type: "crf",
+	elements: [
+		{
+			name: "basic_exam_description",
+			display: "Basic Exam Description",
+			type: "section",
+			elements: [
+				{
+					name: "exam_date",
+					display: "Date of Exam",
+					type: "text",
+					dataType: "string",
+					annotation: "lungrads-exam-date"
+				},
+				{
+					name: "comparison_exam",
+					display: "Comparison Exam",
+					type: "radio",
+					dataType: "string",
+					values: ["Yes", "No"],
+					annotation: "lungrads-comparison-exam"
+				}
+			]
+		},
+		{
+			name: "history",
+			display: "History",
+			type: "section",
+			elements: [
+				{
+					name: "reason_for_exam",
+					display: "Reason for Exam",
+					type: "radio",
+					dataType: "string",
+					values: ["Baseline lung cancer screen", "Incidence lung cancer screen", "Early Repeat CT for Indeterminate nodule",
+						"Unrelated to screening"],
+					annotation: "lungrads-reason-for-exam"
+				},
+				{
+					name: "date_of_birth",
+					display: "Date of Birth",
+					type: "text",
+					dataType: "string",
+					annotation: "lungrads-date-of-birth"
+				},
+				{
+					name: "age",
+					display: "Age",
+					type: "text",
+					dataType: "number",
+					annotation: "lungrads-age"
+				},
+				{
+					name: "sex",
+					display: "Sex",
+					type: "text",
+					dataType: "string",
+					annotation: "lungrads-sex"
+				},
+				{
+					name: "race",
+					display: "Race",
+					type: "text",
+					dataType: "string",
+					annotation: "lungrads-race"
+				},
+				{
+					name: "race_declined",
+					display: "Race declined to answer",
+					type: "radio",
+					dataType: "string",
+					values: ["Yes", "No"],
+					annotation: "lungrads-race-declined"
+				},
+				{
+					name: "ethnicity",
+					display: "Ethnicity",
+					type: "radio",
+					dataType: "string",
+					values: ["Hispanic", "Non-Hispanic", "Declined to Answer"],
+					annotation: "lungrads-ethnicity"
+				},
+				{
+					name: "smoking_status",
+					display: "Smoking Status",
+					type: "radio",
+					dataType: "string",
+					values: ["Non smoker", "Current smoker", "Former smoker"],
+					annotation: "lungrads-smoking-status"
+				},
+				{
+					name: "years_since_quit_smoking",
+					display: "Years Since Quit Smoking",
+					type: "text",
+					dataType: "number",
+					annotation: "lungrads-years-since-quit-smoking"
+				},
+				{
+					name: "pack-years",
+					display: "Pack Years",
+					type: "text",
+					dataType: "number",
+					annotation: "lungrads-pack-years"
+				}
+			]
+		},
+		{
+			name: "radiation_dose",
+			display: "Radiation Dose",
+			type: "section",
+			elements: [
+				{
+					name: "ctdivol",
+					display: "CTDIvol (CT Dose Index-Volume)",
+					type: "text",
+					dataType: "string",
+					annotation: "lungrads-cdtivol"
+				},
+				{
+					name: "dlp",
+					display: "DLP (Dose Length Product)",
+					type: "text",
+					dataType: "number",
+					annotation: "lungrads-dlp"
+				}
+				
+			]
+		},
+		{
+			name: "lung_nodules_cat_3_5",
+			display: "Lung Nodules (LungRADS Category 3-5)",
+			type: "section",
+			elements: [
+				{
+					name: "lung_rads_cat_3_5",
+					display: "LungRADS Category 3-5 Nodules",
+					type: "radio",
+					dataType: "string",
+					values: ["None", "Present"],
+					annotation: "lungrads-nodules-cat-3-5"
+				}
+			]
+		},
+		{
+			name: "lung_nodules_cat_3_5_details",
+			display: "Lung Nodule Details",
+			type: "section",
+			repeat: -1,
+			elements: [
+				{
+					name: "nodule-number",
+					display: "Nodule Number",
+					annotation: "lungrads-nodule-number",
+					type: "text",
+					dataType: "number"
+				},
+				{
+					name: "consistency",
+					display: "Consistency",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-nodule-consistency",
+					values: ["Solid nodule", "Part-solid nodule (PSN)", "Ground glass nodule / Non-solid nodule (GGN)"]
+				},
+				{
+					name: "anatomic_location",
+					display: "Anatomic Location",
+					type: "radio",
+					annotation: "lungrads-nodule-location",
+					dataType: "string",
+					primaryKey: true,
+					values: ["Right upper lobe", "Right lower lobe", "Right middle lobe", "Left upper lobe", "Left lower lobe"]
+				},
+				{
+					name: "series",
+					display: "Series Number",
+					annotation: "lungrads-series",
+					type: "text",
+					dataType: "number"
+				},
+				{
+					name: "image",
+					display: "Image Number",
+					annotation: "lungrads-image",
+					type: "text",
+					dataType: "number"
+				},
+				{
+					name: "nodule_size_1",
+					display: "Nodule Size (mm)",
+					annotation: "lungrads-nodule-size",
+					type: "text",
+					dataType: "number"
+				},
+				{
+					name: "nodule_size_2",
+					display: "Nodule Size (mm)",
+					type: "text",
+					dataType: "number",
+					annotation: "lungrads-nodule-size"
+				},
+				{
+					name: "nodule_mean_diameter",
+					display: "Nodule Mean Diameter (mm)",
+					type: "text",
+					dataType: "number",
+					annotation: "lungrads-nodule-mean-diameter"
+				},
+				{
+					name: "psn_solid_component",
+					display: "For PSN: diameter of SOLID component",
+					type: "text",
+					dataType: "number",
+					annotation: "lungrads-nodule-solid-component"
+				},
+				{
+					name: "evolution",
+					display: "Evolution",
+					type: "checkbox",
+					dataType: "string",
+					annotation: "lungrads-nodule-evolution",
+					values: ["Not applicable, baseline scan", "New", "Stable", "Resolved", "Increased Size", "Decreased Size", "Increased Attenuation", 
+					"Decreased Attenuation"]
+				},
+				{
+					name: "margins",
+					display: "Margins",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-nodule-margins",
+					values: ["Smooth", "Lobulated", "Spiculated or Serrated", "Poorly Marginated", 
+					"Decreased Attenuation"]
+				},
+				{
+					name: "level_of_suspicion",
+					display: "Level of suspicion for lung cancer",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-nodule-level-of-suspicion",
+					values: ["Low", "Moderately low", "Intermediate", "Moderately high", "High"]
+				},
+				{
+					name: "lungrads_nodule_category",
+					display: "LungRADS Nodule Category",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-nodule-category",
+					values: ["3", "4A", "4B", "4X"]
+				},
+				{
+					name: "lungrads_nodule_cat_3_5_comment",
+					display: "Comments (Provide rationale if recommendation will deviate from LungRADS algorithm)",
+					type: "text",
+					dataType: "string",
+					annotation: "lungrads-nodule-cat-3-5-comment"
+				}
+			]
+		},
+		{
+			name: "lung_nodules_cat_2",
+			display: "Lung Nodules (LungRADS Category 2)",
+			type: "section",
+			elements: [
+				{
+					name: "lungrads_cat_2_nodules-present",
+					display: "LungRADS Category 2 Nodules",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-cat-2-nodules-present",
+					values: ["None", "Present"]
+				},
+				{
+					name: "lungrads_cat_2_nodules_quantity",
+					display: "LungRADS Category 2 Nodules Quantity",
+					type: "text",
+					dataType: "string",
+					annotation: "lungrads-cat-2-nodules-quantity"
+				}
+			]
+		},
+		{
+			name: "lung_nodules_cat_2_details",
+			display: "Lung Nodules (LungRADS Category 2) Details",
+			type: "section",
+			repeat: 3,
+			elements: [
+				{
+					name: "lungrads_cat_2_nodule_consistency",
+					display: "Consistency",
+					type: "text",
+					dataType: "string",
+					annotation: "lungrads-cat-2-nodule-consistency"
+				},
+				{
+					name: "lungrads_cat_2_nodule_size",
+					display: "Size (mm)",
+					type: "text",
+					dataType: "number",
+					annotation: "lungrads-cat-2-nodule-size"
+				},
+				{
+					name: "lungrads_cat_2_nodule_location",
+					display: "Location",
+					type: "text",
+					dataType: "string",
+					primaryKey: true,
+					annotation: "lungrads-cat-2-nodule-location"
+				},
+				{
+					name: "lungrads_cat_2_series",
+					display: "Series",
+					type: "text",
+					dataType: "number",
+					annotation: "lungrads-cat-2-series"
+				},
+				{
+					name: "lungrads_cat_2_image",
+					display: "Image",
+					type: "text",
+					dataType: "number",
+					annotation: "lungrads-cat-2-image"
+				},
+				{
+					name: "lungrads_cat_2_evolution",
+					display: "Evolution",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-cat-2-evolution",
+					values: ["Increased Size", "Decreased Size", "Stable", "Other"]
+				}
+			]
+		},
+		{
+			name: "lung_nodules_cat_1",
+			display: "Lung Nodules (LungRADS Category 1)",
+			type: "section",
+			elements: [
+				{
+					name: "lungrads_cat_1_nodules-present",
+					display: "LungRADS Category 1 Nodules",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-cat-1-nodules-present",
+					values: ["None", "Present"]
+				},
+				{
+					name: "lungrads_cat_1_nodule_consistency",
+					display: "Consistency",
+					type: "text",
+					dataType: "string",
+					annotation: "lungrads-cat-1-nodule-consistency"
+				},
+				{
+					name: "lungrads_cat_1_nodule_location",
+					display: "Location",
+					type: "text",
+					dataType: "string",
+					annotation: "lungrads-cat-1-nodule-location"
+				},
+				{
+					name: "lungrads_cat_1_nodule_description",
+					display: "Likely:",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-cat-1-nodule-description",
+					values: ["Granuloma", "Scar", "Hamartoma", "Intrapulmonary lymph node"]
+				}
+			]
+		},
+		{
+			name: "lung_parenchyma",
+			display: "Lung Parenchyma",
+			type: "section",
+			elements: [
+				{
+					name: "emphysema",
+					display: "Emphysema",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-emphysema",
+					values: ["Yes", "No"]
+				},
+				{
+					name: "emphysema_severity",
+					display: "Emphysema Severity",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-emphysema-severity",
+					values: ["Trace (< 5%)", "Mild (6-25%)", "Moderate (26-50%)", "Severe (51-75%)", "Extensive (76-100%)"]
+				},
+				{
+					name: "emphysema_type",
+					display: "Emphysema Type",
+					type: "checkbox",
+					dataType: "string",
+					annotation: "lungrads-emphysema-type",
+					values: ["Centrilobular", "Panacinar", "Paraseptal", "Paracicatricial"]
+				},
+				{
+					name: "emphysema_distribution",
+					display: "Emphysema Distribution",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-emphysema-distribution",
+					values: ["Apices", "Upper lobe", "Mid-lung", "Lower lobe predominant", "Diffuse", "Diffuse with upper lobe predominance",  "Diffuse with lower lobe predominance"]
+				},
+				{
+					name: "airways_disease",
+					display: "Airways Disease",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-airways-disease",
+					values: ["Yes", "No"]
+				},
+				{
+					name: "airways_distribution",
+					display: "Airways Distribution",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-airways-distribution",
+					values: ["Upper lobe", "Lower lobe", "Diffuse", "Focal", "Multifocal"]
+				},
+				{
+					name: "airways_location",
+					display: "Airways Location",
+					type: "checkbox",
+					dataType: "string",
+					annotation: "lungrads-airways-location",
+					values: ["Right upper lobe", "Right lower lobe", "Right middle lobe", "Left upper lobe", "Left lower lobe"]
+				},
+				{
+					name: "fibrosis",
+					display: "Focal or Diffuse Fibrosis",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-fibrosis",
+					values: ["Yes", "No"]
+				},
+				{
+					name: "fibrosis_type",
+					display: "Fibrosis Type",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-fibrosis-type",
+					values: ["Focal fibrosis", "Diffuse or subpleural fibrosis", "Perilymphatic micronodularity", "Centrilobular micronodules", "Non-specific"]
+				},
+				{
+					name: "fibrosis_non_specific",
+					display: "Fibrosis Non-Specific Description",
+					type: "text",
+					dataType: "string",
+					annotation: "lungrads-fibrosis-non-specific"
+				},
+				{
+					name: "fibrosis_anatomic_distribution",
+					display: "Fibrosis Anatomic Distribution",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-fibrosis-anatomic-distribution",
+					values: ["Right apices", "Left apices", "Bilateral apices", "Subpleural predominant", "Basilar predominant", "Upper lobe(s)", "Middle lobe(s)", "Lower lobe(s)"]
+				},
+				{
+					name: "fibrosis_etiology",
+					display: "Fibrosis Etiology",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-fibrosis-etiology",
+					values: ["Combined pulmonary fibrosis and emphysema", "UIP", "NSIP", "HP", "Sarcoidosis", "Non-specific", "Post-inflammatory",  "Other"]
+				}
+			]
+		},
+		{
+			name: "other_anatomic_regions",
+			display: "Other Anatomic Regions",
+			type: "section",
+			elements: [
+				{
+					name: "lymph_nodes",
+					display: "Lymph Nodes",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-lymph-nodes",
+					values: ["No intrathoracic adenopathy", "Reactive nodes in (X nodal stations)", "Potentially abnormal nodes in ATS region X"]
+				},
+				{
+					name: "pleural_disease",
+					display: "Pleural Disease",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-pleural-disease",
+					values: ["Yes", "No"]
+				},
+				{
+					name: "pleural_anatomic_location",
+					display: "Pleural Anatomic Location",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-pleural-anatomic-location",
+					values: ["Right", "Left", "Bilateral"]
+				},
+				{
+					name: "pleural_abnormality",
+					display: "Pleural Abnormality",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-pleural-abnormality",
+					values: ["Effusion(s)", "Pleural plaque(s), likely asbestos-related or post-inflammatory", "Pleural nodularity", "Focal or diffuse pleural thickening, likely asbestos-related, post-inflammatory", 
+						"Of indeterminate etiology"]
+				},
+				{
+					name: "cardiac_heart_size",
+					display: "Cardiac Heart Size",
+					type: "radio",
+					dataType: "string",
+					values: ["Normal", "Upper limits of normal", "Enlarged"],
+					annotation: "lungrads-cardiac-heart-size"
+				},
+				{
+					name: "cardiac_pericardium",
+					display: "Pericardium",
+					type: "radio",
+					dataType: "string",
+					values: ["Normal pericardial effusion", "Mild pericardial effusion", "Moderate pericardial effusion", "Large pericardial effusion",
+						"Pericardial thickening", "Pericardial calcification"],
+					annotation: "lungrads-cardiac-pericardium"
+				},
+				{
+					name: "cardiac_artery_calcification",
+					display: "Artery Calcification",
+					type: "radio",
+					dataType: "string",
+					values: ["None", "Mild", "Moderate", "Severe"],
+					annotation: "lungrads-cardiac-artery-calcification"
+				},
+				{
+					name: "cardiac_artery_calcification_distribution",
+					display: "Artery Calcification Distribution",
+					type: "radio",
+					dataType: "string",
+					values: ["LAD", "RCA", "Circumflex", "Left main coronary artery", "Multiple vessels"],
+					annotation: "lungrads-cardiac-artery-calcification-distribution"
+				},
+				{
+					name: "cardiac_artery_other",
+					display: "Other Cardiac Abnormalities",
+					type: "checkbox",
+					dataType: "string",
+					values: ["Aortic valve calcifications", "Ascending aortic enlargement", "Mitral annular calcification", "Possible pulmonary hypertension"],
+					annotation: "lungrads-cardiac-artery-other"
+				},
+				{
+					name: "other_sig_findings",
+					display: "Other Significant Findings",
+					type: "checkbox",
+					dataType: "string",
+					annotation: "lungrads-other-sig-findings",
+					values: ["Thyroid findings", "Osseous or chest wall findings", "Liver findings", "Adrenal findings", "Kidney findings", "Biliary or gall bladder findings", 
+						"Gastric findings", "Bowel pathology", "Other (specify) findings requiring follow-up"]
+				},
+				{
+					name: "other_sig_findings_specify",
+					display: "Other Significant Findings Specify",
+					type: "textarea",
+					dataType: "string",
+					annotation: "lungrads-other-sig-findings-specify"
+				}
+			]
+		},
+		{
+			name: "impression",
+			display: "Impression",
+			type: "section",
+			elements: [
+				{
+					name: "lungrads_cat_overall",
+					display: "Lung Cancer Screening: Category",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-cat-overall",
+					values: ["0", "1", "2", "3", "4A", "4B", "4X"]
+				},
+				{
+					name: "additional_cat_overall",
+					display: "Additional Screening Categories",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-additional-cat-overall",
+					values: ["None", "S", "C"]
+				},
+				{
+					name: "recommendation",
+					display: "Recommendation",
+					type: "radio",
+					dataType: "string",
+					annotation: "lungrads-recommendation",
+					values: [
+					"Recommend annual screening in 12 months", 
+					"Recommend 6 month follow-up low dose CT to assess for interval change", 
+					"Recommend early follow-up LDCT in 3 months to assess for interval change",
+					"Recommend tissue sampling percutaneously / bronchoscopically or PET-CT scan or diagnostic Chest CT or surgical consultation"
+					]
+				}
+			]
+		},
+		{
+			name: "Notes",
+			display: "Notes",
+			type: "section",
+			elements: [
+				{
+					name: "unclear",
+					display: "Unclear",
+					repeat: -1,
+					type: "text",
+					dataType: "string",
+					annotation: "lungrads-unclear"
+				}
+			]
+		}
+	]
+}

@@ -134,15 +134,21 @@ public class ProjectGenerator
 			
 			Statement stmt = conn.createStatement();
 			
+			
+			
 			//get crf ID and frame ID
 			int crfID = -1;
 			int frameID = -1;
-			ResultSet rs = stmt.executeQuery("select a.crf_id, a.frame_id from " + schema + "crf a, " + schema + "crf_project b, " + schema + "project c "
-				+ "where c.name = '" + projName + "' and c.project_id = b.project_id and b.crf_id = a.crf_id");
+			//rs = stmt.executeQuery("select a.crf_id, a.frame_id from " + schema + "crf a, " + schema + "crf_project b, " + schema + "project c "
+			//	+ "where c.name = '" + projName + "' and c.project_id = b.project_id and b.crf_id = a.crf_id");
+			
+			ResultSet rs = stmt.executeQuery("select crf_id, frame_id from " + schema + "crf where name = '" + crfName + "'");
+			
 			if (rs.next()) {
 				crfID = rs.getInt(1);
 				frameID = rs.getInt(1);
 			}
+			
 			
 			
 			//check if projID exists
@@ -159,6 +165,8 @@ public class ProjectGenerator
 				projID = getLastID();
 				stmt.execute("insert into " + schema + "crf_project (crf_id, project_id) values (" + crfID + "," + projID + ")");
 			}
+			
+			
 			
 			if (docQuery == null || docQuery.length() == 0)
 				return;

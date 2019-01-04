@@ -103,6 +103,7 @@ public class DeleteProject
 			pstmtDeleteProject.setInt(1, projID);
 			pstmtDeleteProject.execute();
 			
+
 			pstmtDeleteCRFProj.setInt(1, projID);
 			pstmtDeleteCRFProj.execute();
 			

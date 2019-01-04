@@ -402,7 +402,7 @@ public class ProjectGenerator
 			docNameList.add(docName.toString());
 			docFeaturesList.add(docFeaturesMap);
 			
-			System.out.println("DocID: " + docID + " Name: " + docName.toString());
+			System.out.println("DocID: " + docID + " Name: " + docName.toString() + " Features: " + gson.toJson(docFeaturesMap));
 		}
 		
 		stmt.close();

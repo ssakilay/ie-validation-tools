@@ -131,7 +131,7 @@ public class CRFProcessor
 			
 			if (type.equals("section")) {
 				Map<String, Object> sectionMap = new HashMap<String, Object>();
-				String sectionName = (String) map.get("display");
+				String sectionName = (String) map.get("name");
 				
 				Integer repeat = 0;
 				Double repeatDouble = (Double) map.get("repeat");

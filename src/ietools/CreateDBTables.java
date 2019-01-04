@@ -13,6 +13,7 @@ public class CreateDBTables
 	private Connection conn;
 	private String schema;
 	private Properties props;
+	public Boolean tableFlag = true;
 	
 	private Gson gson;
 	
@@ -21,12 +22,18 @@ public class CreateDBTables
 		gson = new Gson();
 	}
 	
+	
 	public void init(String user, String password, String host, String dbName, String dbType, String config) throws SQLException, ClassNotFoundException, FileNotFoundException, IOException
 	{
 		conn = DBConnection.dbConnection(user, password, host, dbName, dbType);
 		props = new Properties();
 		props.load(new FileReader(config));
 		schema = props.getProperty("schema");
+		
+		String tableFlagStr = props.getProperty("tableFlag");
+		if (tableFlagStr != null) {
+			tableFlag = Boolean.parseBoolean(tableFlagStr);
+		}
 	}
 	
 	public void close() throws SQLException
@@ -73,9 +80,21 @@ public class CreateDBTables
 		
 		String rq = DBConnection.reservedQuote;
 		PreparedStatement pstmt = conn.prepareStatement("insert into " + schema + "." + rq + "user" + rq + " (user_name, pw) values (?,?)");
+		PreparedStatement pstmt2 = conn.prepareStatement("select count(*) from " + schema + "." + rq + "user" + rq + " where user_name = ?");
 		
 		for (String user : userList) {
 			String[] parts = user.split("\\|");
+			
+			int count = -1;
+			pstmt2.setString(1, parts[0]);
+			ResultSet rs = pstmt2.executeQuery();
+			if (rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+			if (count > 0)
+				continue;
+			
 			pstmt.setString(1, parts[0]);
 			pstmt.setString(2, parts[1]);
 			pstmt.execute();
@@ -94,7 +113,10 @@ public class CreateDBTables
 		try {
 			CreateDBTables create = new CreateDBTables();
 			create.init(args[0], args[1], args[2], args[3], args[4], args[5]);
-			create.createDBTables();
+			
+			if (create.tableFlag)
+				create.createDBTables();
+			
 			create.createUsers();
 			create.close();
 		}

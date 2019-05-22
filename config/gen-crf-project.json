@@ -1,5 +1,5 @@
 {
-	schema: "test",
-	crfs: ["crf/i2b2-negation.json", "crf/lung-cancer-screening.json", "crf/test.json"],
-	projects: [{projConfig: "{name:\"I2B2_Negation\",orderby:\"completed\"}", crfName: "I2B2-Negation"}, {projName:"{name:\"Lung-Cancer_Screening\"}", crfName: "LDCT"}, {projName:"{name:\"Test\"}", crfName:"Test"}]
+	schema: "lung-cancer-screening",
+	crfs: ["crf/lung-cancer-screening.json"],
+	projects: [{projConfig: {projName:"{name:\"Lung-Cancer_Screening\"}", crfName: "LDCT"}]
 }

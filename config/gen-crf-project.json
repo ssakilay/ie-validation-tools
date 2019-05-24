@@ -1,5 +1,5 @@
 {
 	schema: "lung-cancer-screening",
 	crfs: ["crf/lung-cancer-screening.json"],
-	projects: [{projConfig: {projName:"{name:\"Lung-Cancer_Screening\"}", crfName: "LDCT"}]
+	projects: [{projName:"{name:\"Lung-Cancer_Screening\"}", crfName: "LDCT"}]
 }
